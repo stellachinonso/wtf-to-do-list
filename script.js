@@ -1,48 +1,85 @@
 const inputBox = document.getElementById("input-box");
 const listContainer = document.getElementById("list-container");
-const container = document.querySelector(".container");
+const Container = document.querySelector(".container");
+const toggle = document.querySelector(".toggle");
 
-//code to add task
+toggle.addEventListener("click", () => {
+    Container.classList.toggle("dark")?(toggle.firstElementChild.className="far fa-moon"):
+    (toggle.firstElementChild.className="far fa-sun")
+});
+
+
+//code that will be contacted when the AddTask button is clicked
 function addTask(){
     if(inputBox.value == ''){
         alert("You must write something!");
-    } else {
+    }
+    else{
         let li = document.createElement("li");
         li.innerHTML = inputBox.value;
         listContainer.appendChild(li);
-        //the cross icon to delete a task
-        let span = document.createElement("span")
+        //cross icon to delete a task
+        let span = document.createElement("span");
         span.innerHTML = "\u00d7";
         li.appendChild(span);
     }
-
-    // after addition of to do list the input box should be empty
+    //after adding the input box should be empty
     inputBox.value = "";
-    //call the save data function whenever changes are added
+    //call save data whenever change are added
     saveData();
-    // whenever li is click to add the good sign or remove the list item
-    listContainer.addEventListener("click", function(e){
-        //check if li is clicked it adds the line through and good image
-        if (e.target.tagName === "LI"){
-            e.target.classList.toggle("checked");
-            saveData();
-        }
-        //if the target element is a span delete the parent element which is the LI
-        else if (e.target.tagName === "SPAN"){
-            e.target.parentElement.remove();
-            saveData();
-        } 
-    }, false);
-
 }
+//Whenever we click container
+listContainer.addEventListener("click", function(e){
+    //check if li is clicked
+    if(e.target.tagName === "LI"){
+        //the check classname and if the checked class name is already there
+        //it will remove it because of the check classlist.toggle from the target element if the clicked target element is LI
+        e.target.classList.toggle("checked");
+        saveData();
+    }
+    //if the clicked target element is a span, delete the parent elelment which is LI
+    else if(e.target.tagName === "SPAN"){
+        e.target.parentElement.remove();
+        saveData();
+    }
+}, false);
 
-//function to save list item on browser
+//store task in browser
 function saveData(){
     localStorage.setItem("data", listContainer.innerHTML);
 }
-//function to display data when the website opens again
+//display data when website is open again
 function showTask(){
     listContainer.innerHTML = localStorage.getItem("data");
 }
 showTask();
 
+//to filter list
+const filterCheckbox = document.createElement('input');
+filterCheckbox.type = 'checkbox';
+
+div.appendChild(filterLabel);
+filterLabel.appendChild(filterCheckbox);
+Container.insertBefore(div, ul);
+
+filterCheckbox.addEventListener('change', (event) => {
+    const isChecked = event.target.checked;
+    const lis = ul.children;    
+
+    if(isChecked) {
+        for(var i = 0; i < lis.length; i++) {
+            var li = lis[i];
+
+            if(li.className == 'checked') {
+                li.style.display = '';  
+            } else {
+                li.style.display = 'none';
+            }
+        }
+    } else {
+        for(var i = 0; i < lis.length; i++) {
+            var li = lis[i];
+            li.style.display ='';
+    } 
+    }
+});
